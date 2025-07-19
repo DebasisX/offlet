@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Offline Wallet DS</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+</head>
+<body class="container py-5">
+  <h3>Offline Wallet with Dual Signatures</h3>
+  <p>Use these endpoints:</p>
+  <ul>
+    <li>POST /register {'username','password'} → returns public_id & embedded_id</li>
+    <li>POST /add_money {'username','amount'}</li>
+    <li>POST /login {'username','password'} → access_token</li>
+    <li>POST /generate_master {'amount'} (Authorization: Bearer token) → master token JSON</li>
+    <li>Run <code>python3 scripts/sign_local.py master_token.json &lt;sender_embedded_id&gt;</code><br>
+        Enter <code>receiver_embedded_id</code> at prompt → produces <code>signed_token.json</code></li>
+    <li>POST /redeem_token (Authorization: Bearer token) with signed JSON → redeem</li>
+  </ul>
+</body>
+</html>
