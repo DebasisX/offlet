@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline Wallet</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head><body>
+<div class="container mt-4">
+  <h2 class="mb-4">Offline Wallet</h2>
+  <div id="forms">
+    <div class="mb-3">
+      <h5>Register</h5>
+      <input id="ruser" placeholder="Username" class="form-control mb-2">
+      <input id="rpass" placeholder="Password" type="password" class="form-control mb-2">
+      <button onclick="register()" class="btn btn-primary">Register</button>
+    </div>
+    <div class="mb-3">
+      <h5>Login</h5>
+      <input id="luser" placeholder="Username" class="form-control mb-2">
+      <input id="lpass" placeholder="Password" type="password" class="form-control mb-2">
+      <button onclick="login()" class="btn btn-success">Login</button>
+    </div>
+  </div>
+  <div id="dashboard" style="display:none;">
+    <h5>Balance: <span id="bal">0</span></h5>
+    <div class="mb-3">
+      <h5>Generate Token</h5>
+      <input id="rec" placeholder="Receiver" class="form-control mb-2">
+      <input id="amt" placeholder="Amount" type="number" class="form-control mb-2">
+      <button onclick="genToken()" class="btn btn-warning">Generate</button>
+      <pre id="tokout"></pre>
+    </div>
+    <div class="mb-3">
+      <h5>Redeem Token</h5>
+      <input id="tid" placeholder="Transaction ID" class="form-control mb-2">
+      <input id="sig" placeholder="Signature" class="form-control mb-2">
+      <button onclick="redeem()" class="btn btn-info">Redeem</button>
+      <pre id="redout"></pre>
+    </div>
+  </div>
+</div>
+<script>
+let token='';
+async function register(){
+  await fetch('/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username: ruser.value, password: rpass.value})});
+  alert('Registered');
+}
+async function login(){
+  let res=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:luser.value,password:lpass.value})});
+  let j=await res.json(); token=j.access_token; document.getElementById('forms').style.display='none'; document.getElementById('dashboard').style.display='block';
+  let b=await fetch('/balance',{headers:{'Authorization':'Bearer '+token}}).then(r=>r.json()); document.getElementById('bal').innerText=b.balance;
+}
+async function genToken(){
+  let res=await fetch('/generate_token',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({receiver_id:rec.value,amount:parseInt(amt.value)})});
+  let j=await res.json(); document.getElementById('tokout').innerText=JSON.stringify(j,null,2);
+}
+async function redeem(){
+  let res=await fetch('/redeem_token',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({transaction_id:tid.value,signature:sig.value})});
+  let j=await res.json(); document.getElementById('redout').innerText=JSON.stringify(j,null,2);
+  let b=await fetch('/balance',{headers:{'Authorization':'Bearer '+token}}).then(r=>r.json()); document.getElementById('bal').innerText=b.balance;
+}
+</script>
+</body></html>
