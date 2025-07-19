@@ -38,3 +38,15 @@ Just like handing over a signed banknote:
 - ✅ Physically transferable
 - ✅ One-time use
 - ✅ Tamper-proof
+
+
+## License
+
+© 2025 Debasis Sikdar. All rights reserved.
+
+This repository and its contents are licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License**.  
+You may share and adapt the materials with proper attribution, **but commercial use is strictly prohibited without prior written permission**.
+
+🔒 Unauthorized commercial usage or rebranding will be subject to takedown notices and legal action under applicable IP laws.
+
+License details: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
